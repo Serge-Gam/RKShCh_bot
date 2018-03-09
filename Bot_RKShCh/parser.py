@@ -4,6 +4,8 @@ from storage import dict_links, dict_users
 
 rus_months = ["Январь", "Февраль", "Март", "Апрель","Май","Июнь", "Июль", "Август","Сентябрь","Октябрь","Ноябрь","Декабрь"]
 rus_days = ["Пн.","Вт.", "Ср.","Чт.","Пт.","Сб.","Вс."]
+video_set = {'Игорь', 'Сергей Гамалий','Петр Тенетко','Сергей Тимошенко','Валентин','Дима Вологдин','Николай'}
+sound_set = {'Алексей Косилов','Эдик','Светлана','Денис','Тамара','Эрик','Алексей Титов','Дмитрий Климкин','Владимир','Егор','Антон','Ясин','Даня Лутцев',}#надо будет этот список подтянуть из таблицы гугл
 
 def get_rasp_for_user(user_id):
     name = dict_users[user_id]['name']
@@ -69,20 +71,37 @@ def get_rasp_for_date(user_id, day='/01'):
     m = dict_users[user_id]['month'].split('/')[0] #получаем дату в формате 01/18
     y = dict_users[user_id]['month'].split('/')[1]
     Pd_date = d +'.0'+ m +'.20'+ y
-    Pd_series = df[Pd_date]
-    output =''
-    for i in range(Pd_series.shape[0]):
-        name = Pd_series.index[i]
-        if Pd_series[i] == None:
-            event = '  -'
+    PD_new = df[[Pd_date]]
+    PD_series = PD_new[Pd_date]
+
+    output ='Расписание на *'+Pd_date+'*\n=======================\n'
+
+
+    for i in range(PD_series.shape[0]):
+
+        name = PD_series.index[i]
+        if dict_users[user_id]['team']=='video':
+            some_set, emoji = video_set, '📹'
         else:
-            event = Pd_series[i]
+            some_set, emoji = sound_set, '🎙'
+        if name in some_set:
+            name = name + emoji
 
-        row = '*' + str(i) +' '+ str(name )+ ':*   '+str(event)+'\n--------------------\n'
+
+        if type(PD_series[i]) == str:
+            event = PD_series[i]
+
+        else:
+            event = '-'
+
+        if i%2 ==0:
+            row = '\n*🔸'+ str(name )+ ':   '+str(event)+'*\n'
+        else:
+            row = '\n🔹'+str(name) + ':   ' + str(event) + '\n'
         output += row
-    return output
+    return output+'\nРасписание на *'+Pd_date+'*\n=======================\n'
 
-  #Pd_series=df.loc[str(name)]  #это уже series
+  #PD_series=df.loc[str(name)]  #это уже series
 
 
 
