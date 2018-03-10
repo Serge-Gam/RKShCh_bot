@@ -2,22 +2,9 @@ import telebot
 import parser
 import storage
 from telebot import types
-import constants
+
 token = '524774362:AAFwD39cVza7vDvycI0sJjHA0ebVCTW2Aeo'
 bot = telebot.TeleBot(token)
-
-#@bot.message_handler(content_types=['text'])
-# def default_text(message):
-#     keyboard = types.InlineKeyboardMarkup()
-#     url_button = types.InlineKeyboardButton(text='Тут живет расписание на февраль',
-#                                             url='https://docs.google.com/spreadsheets/d/1TEDtNX9IPo03toq8W2EGAuOTxu1FzbWfC6lrvz38s2M/edit#gid=0')
-#
-#     keyboard.add(url_button)
-#     bot.send_message(message.chat.id, 'Тут будет расписание:', reply_markup=keyboard)
-
-
-# Обычный режим
-
 
 @bot.message_handler(commands=['test'])
 def keybr(message):
@@ -29,15 +16,11 @@ def keybr(message):
 	else:
 		print('Error')
 
-
-#
-
-
-
-
+@bot.message_handler(commands=['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'])
+def
 
 if __name__ == '__main__':
-    bot.polling(none_stop=True)
+	bot.polling(none_stop=True)
 
 
 
