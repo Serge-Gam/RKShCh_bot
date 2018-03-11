@@ -1,3 +1,4 @@
+
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
@@ -6,12 +7,8 @@ scope = ['https://spreadsheets.google.com/feeds']
 creds = ServiceAccountCredentials.from_json_keyfile_name('botrkshch-342645f98a77.json', scope)
 client = gspread.authorize(creds)
 
-
-# Find a workbook by name and open the first sheet
-# Make sure you use the right name here.
-
 # проверяем со со второй строки чтобы не проверять строку заголовков
-
+# вызываем эти функции после проверки ID
 
 def download_dict_users():
 
@@ -42,21 +39,20 @@ def download_video_set():
         video_set.add(str(sheet.row_values(cell.row)[2]))
     return video_set
 
-
-def upload_emoji(user_id, emoji):
+def download_sound_set():
     sheet = client.open("DB_Table_Users").sheet1
-    cell = sheet.find(str(user_id))
-    sheet.update_cell(cell.row, 5, emoji)
-
-#upload_emoji(146250723, '😎')
+    cells = sheet.findall('sound')
+    sound_set = set()
+    for cell in cells:
+        sound_set.add(str(sheet.row_values(cell.row)[2]))
+    return sound_set
 
 def download_dict_months_links():
     sheet = client.open("DB_Table_Months").sheet1
     dict_months_links = {}
     for row_number in range(2, 100):
         current_row = sheet.row_values(row_number)
-        print(current_row[0])
-        if (current_row[0]).isdigit():
+        if current_row[0].isdigit():
             month_code = current_row[1]
             link = current_row[3]
             dict_months_links[month_code] = link
@@ -64,12 +60,19 @@ def download_dict_months_links():
             break
     return dict_months_links
 
+def upload_month_code(user_id, month_code):
+    sheet = client.open("DB_Table_Users").sheet1
+    cell = sheet.find(str(user_id))
+    sheet.update_cell(cell.row, 4, str(month_code))
+#upload_month_code(146250723, '05/2018')
+
+def upload_emoji(user_id, emoji):
+    sheet = client.open("DB_Table_Users").sheet1
+    cell = sheet.find(str(user_id))
+    sheet.update_cell(cell.row, 5, emoji)
 
 
 
-#
-# def download_sound_set():
-#
 
-# def upload_mounth_code(user_id):
+
 

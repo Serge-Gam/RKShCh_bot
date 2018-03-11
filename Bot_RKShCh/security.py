@@ -1,5 +1,7 @@
+import storage
 
-def Authentication(user_id):
-    alarm_text_01 = 'Воу воу! Ты кто?'
-
-
+def authentication_passed(user_id):
+    if user_id in storage.dict_users:
+        return True
+    else:
+        return False

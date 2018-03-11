@@ -1,13 +1,13 @@
 import pandas as pd
-import utility
-from storage import dict_months_links, dict_users
+import parser_utility
+from storage import dict_months_links, dict_users, video_set, sound_set
 from constants import rus_days, rus_months
 
 
 
-video_set = {'Игорь', 'Сергей Гамалий','Петр Тенетко','Сергей Тимошенко','Валентин','Дима Вологдин','Николай'}
-
-sound_set = {'Алексей Косилов','Эдик','Светлана','Денис','Тамара','Эрик','Алексей Титов','Дмитрий Климкин','Владимир','Егор','Антон','Ясин','Даня Лутцев',}#надо будет этот список подтянуть из таблицы гугл
+# video_set = {'Игорь', 'Сергей Гамалий','Петр Тенетко','Сергей Тимошенко','Валентин','Дима Вологдин','Николай'}
+#
+# sound_set = {'Алексей Косилов','Эдик','Светлана','Денис','Тамара','Эрик','Алексей Титов','Дмитрий Климкин','Владимир','Егор','Антон','Ясин','Даня Лутцев',}#надо будет этот список подтянуть из таблицы гугл
 
 
 def get_rasp_for_user(user_id):
@@ -16,7 +16,7 @@ def get_rasp_for_user(user_id):
     print('Отправлено для ' + str(name)) #контроль
     month = dict_users[user_id]['month']
     link = dict_months_links[month]
-    key = utility.get_key(link)
+    key = parser_utility.get_key(link)
     print(key, name, month, link, sep=' ')
 
 
@@ -40,7 +40,7 @@ def get_rasp_for_user(user_id):
     #смотрим на дни недели
     Days = range(Pd_series.shape[0])
     for day in Days:
-        Weekday_pd_index = utility.get_weekday_number(Pd_series.index[day])
+        Weekday_pd_index = parser_utility.get_weekday_number(Pd_series.index[day])
         Day_pd = Pd_series.index[day][:2]
         Weekday_rus = rus_days[Weekday_pd_index]
         if pred == 6: # 6 - это Вск - проверяем не Вск ли сейчас случайно
@@ -52,16 +52,17 @@ def get_rasp_for_user(user_id):
             message_rasp += ('\n' + '*' + Weekday_rus + '*' + '\t' + '/'+Day_pd + '\t' + '   -')
         pred = Weekday_pd_index
         #добавляем эмоджи если функция if_today возврящает True
-        if utility.event_is_today(Pd_series.index[day]):
+        if parser_utility.event_is_today(Pd_series.index[day]):
             message_rasp += dict_users[user_id]['emoji']
 
     return message_rasp
 #print(get_rasp_for_user('3261372')
 
 def get_rasp_for_date(user_id, day='/01'):
+    user_id = str(user_id)
     month = dict_users[user_id]['month']
     link = dict_months_links[month]
-    key = utility.get_key(link)
+    key = parser_utility.get_key(link)
     df = pd.read_csv('https://docs.google.com/spreadsheets/d/' +
                        key +
                        '/export?gid=0&format=csv',
@@ -69,10 +70,9 @@ def get_rasp_for_date(user_id, day='/01'):
                       )
 
     d = str(day.split('/')[1])
-
     m = dict_users[user_id]['month'].split('/')[0]  #получаем дату в формате 01/18
     y = dict_users[user_id]['month'].split('/')[1]
-    Pd_date = d +'.0'+ m +'.20'+ y
+    Pd_date = '.'.join([d,m,y])
     PD_new = df[[Pd_date]]
     PD_series = PD_new[Pd_date]
 
@@ -90,6 +90,8 @@ def get_rasp_for_date(user_id, day='/01'):
 
         if type(PD_series[i]) == str:
             event = PD_series[i]
+        else:
+            event = '-'
 
         if i%2 == 0:
             row = '\n*🔸'+ str(name )+ ':   ' + str(event) + '*\n'
@@ -100,3 +102,4 @@ def get_rasp_for_date(user_id, day='/01'):
     return output+'\nРасписание на *'+ Pd_date +'*\n=======================\n'
 
   #PD_series=df.loc[str(name)]  #это уже series
+#print(get_rasp_for_date(3261372, '/02'))
