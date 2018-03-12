@@ -29,7 +29,7 @@ def download_dict_users():
         else:
             break
     return dict_users
-#print(download_dict_users())
+print(download_dict_users())
 
 def download_video_set():
     sheet = client.open("DB_Table_Users").sheet1
@@ -54,11 +54,13 @@ def download_dict_months_links():
         current_row = sheet.row_values(row_number)
         if current_row[0].isdigit():
             month_code = current_row[1]
+            name = current_row[2]
             link = current_row[3]
-            dict_months_links[month_code] = link
+            dict_months_links[month_code] = {'name':name,'link':link}
         else:
             break
     return dict_months_links
+#print(download_dict_months_links())
 
 def upload_month_code(user_id, month_code):
     sheet = client.open("DB_Table_Users").sheet1

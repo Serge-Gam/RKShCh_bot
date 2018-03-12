@@ -3,22 +3,11 @@ import parser_utility
 from storage import dict_months_links, dict_users, video_set, sound_set
 from constants import rus_days, rus_months
 
-
-
-# video_set = {'Игорь', 'Сергей Гамалий','Петр Тенетко','Сергей Тимошенко','Валентин','Дима Вологдин','Николай'}
-#
-# sound_set = {'Алексей Косилов','Эдик','Светлана','Денис','Тамара','Эрик','Алексей Титов','Дмитрий Климкин','Владимир','Егор','Антон','Ясин','Даня Лутцев',}#надо будет этот список подтянуть из таблицы гугл
-
-
 def get_rasp_for_user(user_id):
-    name = dict_users[user_id]['name']
-
-    print('Отправлено для ' + str(name)) #контроль
-    month = dict_users[user_id]['month']
-    link = dict_months_links[month]
+    name = dict_users[user_id]['user_name']
+    month_code = dict_users[user_id]['month']
+    link = dict_months_links[month_code]['link']
     key = parser_utility.get_key(link)
-    print(key, name, month, link, sep=' ')
-
 
     df = pd.read_csv('https://docs.google.com/spreadsheets/d/' +
                        key +
@@ -60,8 +49,8 @@ def get_rasp_for_user(user_id):
 
 def get_rasp_for_date(user_id, day='/01'):
     user_id = str(user_id)
-    month = dict_users[user_id]['month']
-    link = dict_months_links[month]
+    month_code = dict_users[user_id]['month']
+    link = dict_months_links[month_code]['link']
     key = parser_utility.get_key(link)
     df = pd.read_csv('https://docs.google.com/spreadsheets/d/' +
                        key +
@@ -74,11 +63,12 @@ def get_rasp_for_date(user_id, day='/01'):
     y = dict_users[user_id]['month'].split('/')[1]
     Pd_date = '.'.join([d,m,y])
     PD_new = df[[Pd_date]]
+    PD_new = PD_new.sort_values([Pd_date])
     PD_series = PD_new[Pd_date]
 
     output ='Расписание на *'+Pd_date+'*\n=======================\n'
 
-    for i in range(PD_series.shape[0] - 1):
+    for i in range(PD_series.shape[0] ):
         name = PD_series.index[i]
         if dict_users[user_id]['team'] == 'video':
             some_set, emoji = video_set, '📹'

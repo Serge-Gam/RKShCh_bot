@@ -2,3 +2,4 @@
 telebot
 PyTelegramBotAPI
 pandas
+gspread
