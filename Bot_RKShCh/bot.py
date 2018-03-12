@@ -19,7 +19,7 @@ bot = telebot.TeleBot(token)
 def test(message):
 	user_id = str(message.chat.id)
 	if authentication_passed(user_id):
-		response_text = parser.get_rasp_for_user(user_id)
+		response_text = parser.make_rasp_for_user(user_id)
 
 		bot.send_message(message.chat.id, response_text, parse_mode='Markdown')
 	else:
@@ -35,7 +35,7 @@ def get_me_a_schadule_for_the_day(message):
 	user_id = str(message.chat.id)
 	day = message.text
 	if authentication_passed(user_id) == True:
-		response_text = parser.get_rasp_for_date(user_id, day)
+		response_text = parser.make_rasp_for_date(user_id, day)
 		bot.send_message(message.chat.id, response_text, parse_mode='Markdown')
 	else:
 		bot.send_message (message.chat.id, constants.message_user_not_found , parse_mode='Markdown', reply_markup= markup)
