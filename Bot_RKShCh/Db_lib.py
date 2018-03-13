@@ -62,7 +62,7 @@ def download_dict_months_links():
     return dict_months_links
 #print(download_dict_months_links())
 
-def upload_month_code(user_id, month_code):
+def upload_month_code(user_id, month_code):#type(user_id)=int, type(month_code)=str
     sheet = client.open("DB_Table_Users").sheet1
     cell = sheet.find(str(user_id))
     sheet.update_cell(cell.row, 4, str(month_code))

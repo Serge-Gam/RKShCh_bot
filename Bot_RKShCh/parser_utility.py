@@ -1,5 +1,5 @@
 from datetime import date
-from storage import dict_months_links, dict_users, video_set, sound_set
+from storage import dict_months_links, dict_users
 import pandas as pd
 
 def get_weekday_number(s_smth): #принимаем на вход пандовский series
@@ -18,6 +18,7 @@ def event_is_today(s_smth):
 
 #загружаем файл таблицу как csv и возвращаем  dataframe
 def get_dataframe(user_id):
+    user_id = str(user_id)
     month_code = dict_users[user_id]['month']
     link = dict_months_links[month_code]['link']
     key = link.split('/')[5]
