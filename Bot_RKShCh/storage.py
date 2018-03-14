@@ -1,23 +1,18 @@
 import Db_lib
-dict_users, dict_months_links = {}, {}
-sound_set, video_set = set(), set()
-
-# def download_data():
-#     global dict_users, video_set, sound_set, dict_months_links
-#     print('#stage1# dict_users downloading...')
-#     dict_users = Db_lib.download_dict_users()
-#     print('dict_users:',dict_users,sep='\n')
-#     print('#stage1# complete')
-#     print('#stage2# video_set & sound_set downloading...')
-#     video_set = Db_lib.download_video_set()
-#     sound_set = Db_lib.download_sound_set()
-#     print('video_set:',video_set,'sound_set:',sound_set,sep='\n')
-#     print('#stage2# complete')
-#     print('#stage3# dict_months_links updating...')
-#     dict_months_links = Db_lib.download_dict_months_links()
-#     print('dict_months_links:', dict_months_links, sep='\n')
-#     print('#stage3# complete')
-#     return print('download_data: success')
+# загружаем данные из гугл таблицы
+print('#stage1# dict_users downloading...')
+dict_users = Db_lib.download_dict_users()
+print('dict_users:',dict_users,sep='\n')
+print('#stage1# complete')
+print('#stage2# video_set & sound_set downloading...')
+video_set = Db_lib.download_video_set()
+sound_set = Db_lib.download_sound_set()
+print('video_set:',video_set,'sound_set:',sound_set,sep='\n')
+print('#stage2# complete')
+print('#stage3# dict_months_links updating...')
+dict_months_links = Db_lib.download_dict_months_links()
+print('dict_months_links:', dict_months_links, sep='\n')
+print('#stage3# complete')
 
 # dict_users = {'3261372': {'emoji': '👈', 'month': '03/2018', 'admin': 'TRUE', 'team': 'video', 'user_name': 'Сергей Гамалий'}, '172974394': {'emoji': '👈', 'month': '03/2018', 'admin': 'FALSE', 'team': 'video', 'user_name': 'Николай'}, '146250723': {'emoji': '😎', 'month': '03/2018', 'admin': 'FALSE', 'team': 'sound', 'user_name': 'Алексей Титов'}, '150497180': {'emoji': '👈', 'month': '03/2018', 'admin': 'FALSE', 'team': 'video', 'user_name': 'Игорь'}}
 # dict_users = {'150497180': {'team': 'video', 'user_name': 'Игорь', 'admin': 'FALSE', 'emoji': '👈', 'month': '03/2018'}, '3261372': {'team': 'video', 'user_name': 'Сергей Гамалий', 'admin': 'TRUE', 'emoji': '👈', 'month': '03/2018'}, '146250723': {'team': 'sound', 'user_name': 'Алексей Титов', 'admin': 'FALSE', 'emoji': '😎', 'month': '03/2018'}, '172974394': {'team': 'video', 'user_name': 'Николай', 'admin': 'FALSE', 'emoji': '👈', 'month': '03/2018'}}

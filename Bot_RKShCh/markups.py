@@ -18,11 +18,13 @@ def generate_choose_month_markup():
         year_today = date.today().year
         month_today = date.today().month
         if year_today == int(year) and month_today == int(month_number[:-1]):
-            button_text = ' '.join([month_number,dict_months_links[key]['name'],str(year)+'🗓'])
+            button_text = ' '.join([month_number,dict_months_links[key]['name'],str(year),'🗓'])
+            print(button_text)
         else:
             button_text = ' '.join([month_number,dict_months_links[key]['name'],str(year)])
         button_list.append(button_text)
     button_list.sort()
+    print(button_list)
 
     button_final_list = []
     for button in button_list:
