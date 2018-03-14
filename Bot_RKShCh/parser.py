@@ -5,8 +5,6 @@ from constants import rus_days, rus_months
 
 def make_rasp_for_user(user_id):
     user_id = str(user_id)
-    print(user_id)
-    print(dict_users)
     name = dict_users[user_id]['user_name']
     df = parser_utility.get_dataframe(user_id)
     Pd_series=df.loc[str(name)]  #это уже series
@@ -68,6 +66,7 @@ def make_rasp_for_date(user_id, day='/01'):
             some_set, emoji = video_set, '📹'
         else:
             some_set, emoji = sound_set, '🎙'
+
         if name in some_set:
             name = emoji + name
 
@@ -91,7 +90,7 @@ def make_rasp_for_date(user_id, day='/01'):
     list_of_keys.sort()
     for key in list_of_keys:
         Events = dict_of_events.pop(key)
-        output += '\n\n*🎭 ' + key + ':*'
+        output += '\n\n*' + key + ':*'
         for Event in Events:
             output += '\n' + Event
     while day_off:
@@ -103,12 +102,12 @@ def make_rasp_for_date(user_id, day='/01'):
     #добавляем информацию о контрамарках
     last_row_index = PD_series.shape[0]-1
     kontramarki_title = PD_series.index[last_row_index]
-    if PD_series[last_row_index] == str():
-        kontramarki_info = PD_series[last_row_index]
+    output += ' '.join([' \n\n📝*', str(kontramarki_title),'*:'])
+    if type(PD_series[last_row_index]) == str:
+        output += '\n' + PD_series[last_row_index]
     else:
-        kontramarki_info = '-'
-    output += ' '.join(['\n\n📝*',str(kontramarki_title),'*:\n',str(kontramarki_info)])
-    output += ' '.join(['*\n=======================\n',d,month_name_rus,week_day,Pd_date,'\n=======================\n*'])
+        output += '\n-'
+    output += ' '.join(['*\n\n=======================\n',d,month_name_rus,week_day,Pd_date,'\n=======================\n*'])
 
 
     return output

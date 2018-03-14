@@ -6,19 +6,34 @@ import Db_lib
 import constants
 import markups
 from telebot import types
-from security import authentication_passed
+from security import authentication_passed, user_is_admin
 
 token = '524774362:AAFwD39cVza7vDvycI0sJjHA0ebVCTW2Aeo'
 bot = telebot.TeleBot(token)
 
+@bot.message_handler(commands=['start'])
+def start(message):
+	user_id = message.chat.id
+	if authentication_passed(user_id):
+		response_text = parser.make_rasp_for_user(user_id)
+		bot.send_message(message.chat.id, response_text, parse_mode='Markdown', reply_markup=markups.generate_regular_markup())
+	else:
+		bot.send_message (message.chat.id, constants.message_user_not_found)
+
+@bot.message_handler(commands=['help'])
+def help(message):
+	user_id = message.chat.id
+	if authentication_passed(user_id) and user_is_admin(user_id):
+		bot.send_message (message.chat.id, constants.message_manual_admin, parse_mode='Markdown', reply_markup=markups.generate_regular_markup())
+	elif authentication_passed(user_id):
+		bot.send_message (message.chat.id, constants.message_manual, parse_mode='Markdown', reply_markup=markups.generate_regular_markup())
+	else:
+		bot.send_message (message.chat.id, constants.message_user_not_found)
 
 @bot.message_handler(commands=['update'])
 def test(message):
-	print(storage.dict_users)
 	user_id = message.chat.id
 	if authentication_passed(user_id):
-		print('authentication_passed')
-		print(type(user_id))
 		response_text = parser.make_rasp_for_user(user_id)
 		bot.send_message(message.chat.id, response_text, parse_mode='Markdown', reply_markup=markups.generate_regular_markup())
 	else:
@@ -35,10 +50,6 @@ def get_schadule_for_the_day(message):
 		bot.send_message(message.chat.id, response_text, parse_mode='Markdown', reply_markup=markups.generate_regular_markup())
 	else:
 		bot.send_message (message.chat.id, constants.message_user_not_found , parse_mode='Markdown', reply_markup=markups.generate_regular_markup())
-
-
-
-
 
 @bot.message_handler(content_types=['text'])
 def text_handler(message):
@@ -65,24 +76,18 @@ def text_handler(message):
 					month_number = '0' + month_number
 				month_code = '/'.join([month_number,year])
 				storage.dict_users[str(user_id)]['month'] = month_code
-				print('success')
-				print(storage.dict_users[str(user_id)])
 				response_text = 'Месяц изменен на {}'.format(message.text)
 				bot.send_message (message.chat.id, response_text, parse_mode='Markdown',
 								  reply_markup=markups.generate_regular_markup())
 				response_text = parser.make_rasp_for_user (user_id)
 				bot.send_message (message.chat.id, response_text, parse_mode='Markdown',
 								  reply_markup=markups.generate_regular_markup ())
+				Db_lib.upload_month_code(user_id,month_code)
 
 		else:
 			response_text = 'Привет {}, как бы это так но не эвок'.format (message.from_user.first_name)
 			bot.send_message (message.chat.id, response_text, parse_mode='Markdown',
 							  reply_markup=types.ReplyKeyboardRemove())
-
-
-
-
-
 
 	else:
 		bot.send_message (message.chat.id, constants.message_user_not_found)
