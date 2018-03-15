@@ -9,7 +9,8 @@ import markups
 from telebot import types
 from security import authentication_passed, user_is_admin
 
-token = '524774362:AAFwD39cVza7vDvycI0sJjHA0ebVCTW2Aeo'
+#token =
+token = os.environ['TELEGRAM_TOKEN']
 bot = telebot.TeleBot(token)
 
 # @bot.message_handler(commands=['update_storage'])
