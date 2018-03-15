@@ -1,3 +1,4 @@
+import os
 import re
 import telebot
 import parser
@@ -10,6 +11,40 @@ from security import authentication_passed, user_is_admin
 
 token = '524774362:AAFwD39cVza7vDvycI0sJjHA0ebVCTW2Aeo'
 bot = telebot.TeleBot(token)
+
+# @bot.message_handler(commands=['update_storage'])
+# def storage(message):
+# 	user_id = message.chat.id
+# 	if authentication_passed (user_id) and user_is_admin (user_id):
+# 		storage.dict_users = Db_lib.download_dict_users ()
+# 		# response_text ='#stage1# dict_users downloading...'
+# 		# bot.send_message (message.chat.id, response_text, parse_mode='Markdown',
+# 		# 				  reply_markup=telebot.types.ReplyKeyboardRemove)
+# 		# storage.dict_users = Db_lib.download_dict_users ()
+# 		# response_text = '#stage1# complete'
+# 		# bot.send_message (message.chat.id, response_text, parse_mode='Markdown',
+# 		# 				  reply_markup=telebot.types.ReplyKeyboardRemove)
+#         #
+# 		# response_text = '#stage2# video_set & sound_set downloading...'
+# 		# bot.send_message (message.chat.id, response_text, parse_mode='Markdown',
+# 		# 				  reply_markup=telebot.types.ReplyKeyboardRemove)
+# 		# storage.video_set = Db_lib.download_video_set ()
+# 		# storage.sound_set = Db_lib.download_sound_set ()
+# 		# response_text = '#stage2# complete'
+# 		# bot.send_message (message.chat.id, response_text, parse_mode='Markdown',
+# 		# 				  reply_markup=telebot.types.ReplyKeyboardRemove)
+#         #
+# 		# response_text = '#stage3# dict_months_links updating...'
+# 		# bot.send_message (message.chat.id, response_text, parse_mode='Markdown',
+# 		# 				  reply_markup=telebot.types.ReplyKeyboardRemove)
+# 		# storage.dict_months_links = Db_lib.download_dict_months_links ()
+#         #
+# 		# response_text = '#stage3# complete\nBot is ready to play'
+# 		# bot.send_message (message.chat.id, response_text, parse_mode='Markdown',
+# 		# 				  reply_markup=markups.generate_regular_markup ())
+#
+# 	else:
+# 		bot.send_message (message.chat.id, constants.message_user_not_found)
 
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -83,6 +118,15 @@ def text_handler(message):
 				bot.send_message (message.chat.id, response_text, parse_mode='Markdown',
 								  reply_markup=markups.generate_regular_markup ())
 				Db_lib.upload_month_code(user_id,month_code)
+		#меняем эмоджи
+		elif message.text[:5].lower() == 'emoji':
+			emoji = message.text.split(' ')[1]
+			storage.dict_users[str(user_id)]['emoji'] = emoji
+			Db_lib.upload_emoji(user_id, emoji)
+			response_text = 'Сохранил ваш emoji: ' + emoji + '👌'
+			bot.send_message(message.chat.id, response_text, reply_markup=markups.generate_regular_markup())
+
+
 
 		else:
 			response_text = 'Привет {}, как бы это так но не эвок'.format (message.from_user.first_name)
