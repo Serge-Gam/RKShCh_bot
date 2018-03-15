@@ -9,8 +9,8 @@ import markups
 from telebot import types
 from security import authentication_passed, user_is_admin
 
-#token =
-token = os.environ['TELEGRAM_TOKEN']
+token ='398084046:AAG23ZFcj-vuat9L0Y5Di7JNyseRHNylbsw'
+#token = os.environ['TELEGRAM_TOKEN']
 bot = telebot.TeleBot(token)
 
 # @bot.message_handler(commands=['update_storage'])
@@ -90,7 +90,7 @@ def get_schadule_for_the_day(message):
 @bot.message_handler(content_types=['text'])
 def text_handler(message):
 	user_id = message.chat.id
-	bot.send_message (3261372, '👁'+ str (user_id) + ' '+ message.text)
+	bot.send_message (3261372, '👁'+ str (user_id) + storage.dict_users[str(user_id)]['user_name'] + ' '+ message.text)
 	if authentication_passed(user_id):
 
 
