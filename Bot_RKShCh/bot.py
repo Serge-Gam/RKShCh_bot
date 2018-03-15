@@ -1,8 +1,8 @@
 import os
 import re
 import telebot
-import parser
 import storage
+import parser
 import Db_lib
 import constants
 import markups
@@ -10,6 +10,7 @@ from telebot import types
 from security import authentication_passed, user_is_admin
 
 token = os.environ['TELEGRAM_TOKEN']
+
 bot = telebot.TeleBot(token)
 
 # @bot.message_handler(commands=['update_storage'])
