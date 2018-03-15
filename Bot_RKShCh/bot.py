@@ -3,7 +3,7 @@ import re
 import telebot
 import storage
 import parser
-import Db_lib
+#import Db_lib
 import constants
 import markups
 from telebot import types
@@ -118,12 +118,12 @@ def text_handler(message):
 				response_text = parser.make_rasp_for_user (user_id)
 				bot.send_message (message.chat.id, response_text, parse_mode='Markdown',
 								  reply_markup=markups.generate_regular_markup ())
-				Db_lib.upload_month_code(user_id,month_code)
+				#Db_lib.upload_month_code(user_id,month_code)
 		#меняем эмоджи
 		elif message.text[:5].lower() == 'emoji':
 			emoji = message.text.split(' ')[1]
 			storage.dict_users[str(user_id)]['emoji'] = emoji
-			Db_lib.upload_emoji(user_id, emoji)
+			#Db_lib.upload_emoji(user_id, emoji)
 			response_text = 'Сохранил ваш emoji: ' + emoji + '👌'
 			bot.send_message(message.chat.id, response_text, reply_markup=markups.generate_regular_markup())
 
