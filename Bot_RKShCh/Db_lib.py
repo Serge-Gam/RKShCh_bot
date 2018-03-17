@@ -1,4 +1,3 @@
-
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
@@ -72,9 +71,3 @@ def upload_emoji(user_id, emoji):
     sheet = client.open("DB_Table_Users").sheet1
     cell = sheet.find(str(user_id))
     sheet.update_cell(cell.row, 5, emoji)
-
-
-
-
-
-

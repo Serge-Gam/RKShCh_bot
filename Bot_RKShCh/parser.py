@@ -56,7 +56,7 @@ def make_rasp_for_date(user_id, day='/01'):
     else: month_name_rus = ''.join([month_name_rus[:-1],'я'])
 
 
-    output = ' '.join(['\n======================\n*',d,month_name_rus,week_day,Pd_date,'*\n======================'])
+    output = ' '.join(['\n======================\n*',d,month_name_rus,week_day,Pd_date,'*\n======================\n/update'])
     dict_of_events = {}
     for i in range(PD_series.shape[0] - 1):
         name = PD_series.index[i]
@@ -107,7 +107,7 @@ def make_rasp_for_date(user_id, day='/01'):
         output += '\n' + PD_series[last_row_index]
     else:
         output += '\n-'
-    output += ' '.join(['*\n\n=======================\n',d,month_name_rus,week_day,Pd_date,'\n=======================\n*'])
+    output += ' '.join(['*\n\n=======================\n',d,month_name_rus,week_day,Pd_date,'\n=======================\n*\n/update'])
 
 
     return output
