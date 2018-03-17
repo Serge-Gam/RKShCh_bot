@@ -35,6 +35,7 @@ def make_rasp_for_user(user_id):
         #добавляем эмоджи если функция if_today возвращает True
         if parser_utility.event_is_today(Pd_series.index[day]):
             output += dict_users[user_id]['emoji']
+    output +='\n/update'
 
     return output
 #print(get_rasp_for_user('3261372')
