@@ -112,5 +112,4 @@ def make_rasp_for_date(user_id, day='/01'):
 
 
     return output
-
 #print(make_rasp_for_date(3261372, '/02'))
