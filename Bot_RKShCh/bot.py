@@ -90,8 +90,8 @@ def get_schadule_for_the_day(message):
 @bot.message_handler(content_types=['text'])
 def text_handler(message):
 	user_id = message.chat.id
-	bot.send_message (3261372, '👁'+ str (user_id) + storage.dict_users[str(user_id)]['user_name'] + ' '+ message.text)
 	if authentication_passed(user_id):
+		bot.send_message (3261372, '👁'+ str (user_id) + storage.dict_users[str(user_id)]['user_name'] + ' '+ message.text)
 
 
 		if message.text == 'Выбрать Месяц':
@@ -136,6 +136,7 @@ def text_handler(message):
 
 	else:
 		bot.send_message (message.chat.id, constants.message_user_not_found)
+		bot.send_message (3261372,'👁' + str (user_id) + ' ' + message.text)
 
 if __name__ == '__main__':
 	bot.polling (none_stop=True)
